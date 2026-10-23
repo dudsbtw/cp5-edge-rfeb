@@ -9,14 +9,14 @@ FIAP | Engenharia de Software | 2026 | Professor Lucas D. Augusto
 
 ## O que é esse projeto?
 
-Evolução do Checkpoint 01 (Arduino + LDR). Agora o sistema da Vinheria Agnello virou IoT: um **ESP32** lê temperatura, umidade e luminosidade da adega e manda os dados pela internet via **Wi-Fi** usando o protocolo **MQTT**. O aplicativo **MyMQTT** recebe os dados (leitura) e também consegue mandar mensagens pro ESP32 (escrita). Tudo simulado no **Wokwi**.
+Evolução dos Checkpoints anteriores. Agora o sistema da Vinheria Agnello virou IoT: um **ESP32** lê temperatura, umidade e luminosidade da adega e manda os dados pela internet via **Wi-Fi** usando o protocolo **MQTT**. O aplicativo **MyMQTT** recebe os dados (leitura) e também consegue mandar mensagens pro ESP32 (escrita). Tudo simulado no **Wokwi**.
 
 Cada leitura sai com **timestamp** (horário de Brasília), como pede o enunciado.
 
-| Sensor | Grandeza | Pino no ESP32 |
-|--------|----------|---------------|
-| DHT22  | Temperatura e umidade | GPIO 15 |
-| LDR (módulo) | Luminosidade | GPIO 34 |
+| Sensor       | Grandeza              | Pino no ESP32 |
+|--------------|-----------------------|---------------|
+| DHT22        | Temperatura e umidade | GPIO 15       |
+| LDR (módulo) | Luminosidade          | GPIO 34       |
 
 ---
 
@@ -24,8 +24,7 @@ Cada leitura sai com **timestamp** (horário de Brasília), como pede o enunciad
 
 - Simulação no Wokwi: https://wokwi.com/projects/478642838445282305
 - Repositório: https://github.com/dudsbtw/cp5-edge-rfeb
-- Checkpoint 01 (base): https://github.com/dudsbtw/cp1-edge-rfeb
-- Vídeo de demonstração: (colar o link aqui)
+- Vídeo de demonstração: https://youtu.be/GIwivtmxtEU
 
 ---
 
@@ -41,12 +40,12 @@ Cada leitura sai com **timestamp** (horário de Brasília), como pede o enunciad
 
 | Componente | Pino do componente | Pino do ESP32 |
 |------------|--------------------|---------------|
-| DHT22 | VCC | 3V3 |
-| DHT22 | SDA | GPIO 15 |
-| DHT22 | GND | GND |
-| LDR | VCC | 3V3 |
-| LDR | AO | GPIO 34 |
-| LDR | GND | GND |
+|    DHT22   |        VCC         |      3V3      |
+|    DHT22   |        SDA         |    GPIO 15    |
+|    DHT22   |        GND         |      GND      |
+|    LDR     |        VCC         |      3V3      |
+|    LDR     |        AO          |    GPIO 34    |
+|    LDR     |        GND         |      GND      |
 
 O pino NC do DHT22 e o pino DO do módulo LDR ficam sem ligação.
 
@@ -72,11 +71,6 @@ O pino NC do DHT22 e o pino DO do módulo LDR ficam sem ligação.
 
 ![Circuito no Wokwi](img/circuito.png)
 
-Duas diferenças em relação ao Arduino do CP1:
-
-- o módulo LDR já vem com o divisor de tensão pronto, então não precisa de resistor
-- o ADC do ESP32 tem 12 bits, então a luminosidade vai de **0 a 4095** (no Arduino ia de 0 a 1023). O GPIO 34 é do ADC1, que funciona com o Wi-Fi ligado
-
 ---
 
 ## Como funciona o MQTT aqui
@@ -95,12 +89,12 @@ O ESP32 publica um JSON a cada 5 segundos:
 {"temperatura":24.0,"umidade":40.0,"luminosidade":1001,"timestamp":"2026-10-23T00:49:02-03:00"}
 ```
 
-| Campo | Descrição |
-|-------|-----------|
-| temperatura | graus Celsius |
-| umidade | umidade relativa em % |
-| luminosidade | valor bruto do ADC (0 a 4095) |
-| timestamp | data e hora da leitura (ISO 8601, -03:00), obtida por NTP |
+| Campo        | Descrição                                                 |
+|--------------|-----------------------------------------------------------|
+| temperatura  | graus Celsius                                             |
+| umidade      | umidade relativa em %                                     |
+| luminosidade | valor bruto do ADC (0 a 4095)                             |
+| timestamp    | data e hora da leitura (ISO 8601, -03:00), obtida por NTP |
 
 ---
 
@@ -251,14 +245,14 @@ Para montar do zero: crie um projeto ESP32 no Wokwi, adicione o DHT22 e o módul
 
 No app (Android ou iOS), em Settings:
 
-| Campo | Valor |
-|-------|-------|
-| Host | `broker.hivemq.com` |
-| Port | `1883` |
-| SSL | desligado |
-| MQTT version | v3 |
-| Credentials | desligado |
-| Client ID | qualquer um diferente de `agnello-esp32-rfeb` |
+| Campo        | Valor                                         |
+|--------------|-----------------------------------------------|
+| Host         | `broker.hivemq.com`                           |
+| Port         | `1883`                                        |
+| SSL          | desligado                                     |
+| MQTT version | v3                                            |
+| Credentials  | desligado                                     |
+| Client ID    | qualquer um diferente de `agnello-esp32-rfeb` |
 
 ### 3. Leitura dos dados
 
@@ -278,9 +272,10 @@ Atenção: o `/dados` é só de envio do ESP32. Publicar nele não chega no ESP3
 
 ```
 cp5-edge-rfeb/
-├── sketch.ino      código do ESP32
-├── diagram.json    circuito do Wokwi
-├── libraries.txt   bibliotecas do projeto
+├── sketch.ino            código do ESP32
+├── diagram.json          circuito do Wokwi
+├── libraries.txt         bibliotecas do projeto
+├── img/circuito.png      imagem do circuito no Wowki
 └── README.md
 ```
 
